@@ -3,48 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная</title>
-    <link rel="stylesheet" href="/static/styleMain.css">
+    <title>Рецепты</title>
+    <link rel="stylesheet" href="/static/main.css">
 </head>
 <body>
     <header>
-        <div class="logo">
-            <!-- Вставьте логотип здесь -->
-            <img src="logo.png" alt="Логотип" class="logo-img">
+        <div class="logo-container">
+            <img src="/static/images/logo.png" alt="Logo" class="logo-img">
+            <div class="site-title">Кулинарная книга</div>
         </div>
         <nav>
             <ul>
-                <li><a href="main.html">Рецепты</a></li>
-                <li><a href="favorites.html">Избранное</a></li>
-                <li><a href="login.html">Выход</a></li>
-                <li class="user-icon"><img src="user.png" alt="Пользователь"></li>
+                <li><a href="/">Рецепты</a></li>
+                <li><a href="/favorites">Избранное</a></li>
+                <li><a href="/logout">Выход</a></li>
             </ul>
         </nav>
+        <div class="user-profile" onclick="window.location.href='/profile'">
+            <span class="username">{{ session['username'] or 'Неизвестный пользователь' }}</span>
+            <div class="user-icon">
+                <img src="/static/images/user.png" alt="User">
+            </div>
+        </div>
     </header>
-    <main>
-        <section class="hero">
-            <!-- Вставьте фоновое изображение здесь -->
-            <div class="background-image"></div>
-            <h1>РЕЦЕПТЫ</h1>
-            <div class="cards">
-                <div class="card">
-                    <!-- Вставьте изображение для карточки 1 здесь -->
-                    <img src="recipe1.png" alt="Рецепт 1" class="card-img">
-                    <div class="card-content">
-                        <h3>Мясное жаркое с яйцом и луком</h3>
-                        <a href="#" class="more-link">Подробнее</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <!-- Вставьте изображение для карточки 2 здесь -->
-                    <img src="recipe2.png" alt="Рецепт 2" class="card-img">
-                    <div class="card-content">
-                        <h3>Жульен в тарталетках с грибами и сыром</h3>
-                        <a href="#" class="more-link">Подробнее</a>
-                    </div>
+
+    <section class="hero">
+        <div class="background-image" style="background-image: url('/static/images/main-bg.png');"></div>
+        <h1>РЕЦЕПТЫ</h1>
+        <form class="search-form" method="GET" action="/">
+            <input type="text" name="search" placeholder="Поиск по рецептам" value="{{ search_query|default('') }}">
+            <button type="submit">Поиск</button>
+        </form>
+        <div class="add-recipe">
+            {% if session['role'] == 'visitor' or session['role'] == 'admin' %}
+                <a href="/add" class="more-link">Добавить рецепт</a>
+            {% endif %}
+            {% if session['role'] == 'admin' %}
+                <a href="/delete" class="more-link" style="margin-left: 1rem;">Удалить рецепт</a>
+            {% endif %}
+        </div>
+        <div class="cards">
+            {% for recipe in recipes %}
+            <div class="card">
+                <img src="{{ url_for('static', filename=recipe.image_path) if recipe.image_path else 'https://via.placeholder.com/250x150' }}" alt="{{ recipe.title }}" class="card-img">
+                <div class="card-content">
+                    <h3>{{ recipe.title }}</h3>
+                    <div class="description" style="display: none;">{{ recipe.description if recipe.description else 'Описание отсутствует' }}</div>
+                    <a href="#" class="more-link description-toggle">Подробнее</a>
+                    <a href="/toggle_favorite/{{ recipe.id_recipe }}" class="more-link" style="margin-left: 1rem;">{% if recipe.is_favorite %}Удалить из избранного{% else %}Добавить в избранное{% endif %}</a>
                 </div>
             </div>
-        </section>
-    </main>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.description-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const description = this.previousElementSibling;
+                if (description.style.display === 'none' || description.style.display === '') {
+                    description.style.display = 'block';
+                    this.textContent = 'Скрыть';
+                } else {
+                    description.style.display = 'none';
+                    this.textContent = 'Подробнее';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -14,7 +14,7 @@ body {
 }
 
 .background-image {
-    background: url('login-bg.png') no-repeat center center/cover;
+    background: url('/static/images/login-bg.png') no-repeat center center/cover;
     position: absolute;
     top: 0;
     left: 0;
@@ -38,7 +38,8 @@ body {
     font-size: 1.5rem;
 }
 
-.login-form input {
+.login-form input,
+.login-form textarea {
     display: block;
     width: 100%;
     padding: 0.75rem;
@@ -62,4 +63,15 @@ body {
 
 .login-form button:hover {
     background-color: #e65b7d;
+}
+
+.register-link {
+    display: block;
+    margin-top: 1rem;
+    color: #ff6f91;
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
 }

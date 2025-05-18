@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удаление рецептов</title>
+    <link rel="stylesheet" href="/static/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="background-image" style="background-image: url('/static/images/login-bg.png');"></div>
+        <div class="login-form">
+            <h2>Удаление рецептов</h2>
+            <form method="POST" action="/delete">
+                <select name="recipe_id">
+                    {% for recipe in recipes %}
+                    <option value="{{ recipe.id_recipe }}">{{ recipe.title }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Удалить</button>
+            </form>
+            <a href="/" class="register-link">Назад</a>
+        </div>
+    </div>
+</body>
+</html>

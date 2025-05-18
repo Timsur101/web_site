@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/static/login.css">
+</head>
+<body>
+    <div class="background-image" style="background-image: url('/static/images/login-bg.png');"></div>
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Профиль</h2>
+            <form method="POST" action="/profile">
+                <input type="text" name="username" value="{{ session['username'] or '' }}" placeholder="Имя пользователя" required>
+                <input type="email" name="email" value="{{ session['email'] or '' }}" placeholder="Электронная почта" required>
+                <input type="password" name="password" placeholder="Новый пароль" required>
+                <button type="submit">Сохранить</button>
+            </form>
+            <a href="/" class="register-link">Назад</a>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

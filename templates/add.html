@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить рецепт</title>
+    <link rel="stylesheet" href="/static/login.css">
+</head>
+<body>
+    <div class="background-image" style="background-image: url('/static/images/login-bg.png');"></div>
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Добавить рецепт</h2>
+            <form method="POST" action="/add" enctype="multipart/form-data">
+                <input type="text" name="title" placeholder="Название рецепта" required>
+                <textarea name="description" placeholder="Описание" required></textarea>
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit">Добавить</button>
+            </form>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

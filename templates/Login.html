@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авторизация</title>
-    <link rel="stylesheet" href="/static/Login.css">
+    <link rel="stylesheet" href="/static/login.css">
 </head>
 <body>
+    <div class="background-image" style="background-image: url('/static/images/login-bg.png');"></div>
     <div class="login-container">
-        <!-- Вставьте фоновое изображение здесь -->
-        <div class="background-image"></div>
-        <form class="login-form">
+        <div class="login-form">
             <h2>Авторизация</h2>
-            <input type="text" placeholder="Почта" required>
-            <input type="password" placeholder="Пароль" required>
-            <button type="submit">Войти</button>
-        </form>
+            <form method="POST" action="/login">
+                <input type="email" name="email" placeholder="Электронная почта" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+            </form>
+            <a href="/register" class="register-link">Создать аккаунт</a>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное</title>
+    <link rel="stylesheet" href="/static/favorite.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="/static/images/logo.png" alt="Logo" class="logo-img">
+            <div class="site-title">Кулинарная книга</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Рецепты</a></li>
+                <li><a href="/favorites">Избранное</a></li>
+                <li><a href="/logout">Выход</a></li>
+            </ul>
+        </nav>
+        <div class="user-profile" onclick="window.location.href='/profile'">
+            <span class="username">{{ session['username'] or 'Неизвестный пользователь' }}</span>
+            <div class="user-icon">
+                <img src="/static/images/user.png" alt="User">
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="background-image" style="background-image: url('/static/images/main-bg.png');"></div>
+        <h1>ИЗБРАННОЕ</h1>
+        <form class="search-form" method="GET" action="/favorites">
+            <input type="text" name="search" placeholder="Поиск по избранному" value="{{ search_query|default('') }}">
+            <button type="submit">Поиск</button>
+        </form>
+        <div class="cards">
+            {% if favorites %}
+                {% for recipe in favorites %}
+                <div class="card">
+                    <img src="{{ url_for('static', filename=recipe.image_path) if recipe.image_path else 'https://via.placeholder.com/250x150' }}" alt="{{ recipe.title }}" class="card-img">
+                    <div class="card-content">
+                        <h3>{{ recipe.title }}</h3>
+                        <div class="description" style="display: none;">{{ recipe.description if recipe.description else 'Описание отсутствует' }}</div>
+                        <a href="#" class="more-link description-toggle">Подробнее</a>
+                        <a href="/toggle_favorite/{{ recipe.id_recipe }}" class="more-link" style="margin-left: 1rem;">Удалить из избранного</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #333; font-size: 1.2rem;">Пока пусто</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.description-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const description = this.previousElementSibling;
+                if (description.style.display === 'none' || description.style.display === '') {
+                    description.style.display = 'block';
+                    this.textContent = 'Скрыть';
+                } else {
+                    description.style.display = 'none';
+                    this.textContent = 'Подробнее';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
